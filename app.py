@@ -7,7 +7,7 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.set_page_config(page_title="Pathly - AI Career Coach", layout="wide")
 st.title("🤖 Pathly - Your AI Career Coach")
-st.markdown("Empowering you with emotionally intelligent, personalized career guidance ✨")
+st.markdown("Empowering you with intelligent and personalized career guidance ✨")
 
 # Session state for chat history
 if "messages" not in st.session_state:
@@ -32,26 +32,11 @@ emotions = st.sidebar.multiselect("Select emotions that describe your current st
 ])
 blocker = st.sidebar.text_area("📌 What's blocking your progress?")
 
-# --- Mermaid Renderer ---
-def render_mermaid_chart(mermaid_code):
-    st.components.v1.html(
-        f"""
-        <div class="mermaid">
-        {mermaid_code}
-        </div>
-        <script type="module">
-            import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-            mermaid.initialize({{ startOnLoad: true }});
-        </script>
-        """,
-        height=600,
-    )
-
 # --- Emotionally Aware Prompt Builder ---
 def build_emotion_aware_prompt():
     return f"""
-    User: {name}, Age: {age}, Location: {location or 'Not specified'}
-
+    User Profile:
+    Name: {name}, Age: {age}, Location: {location or 'Not specified'}
     Background: {background}
     Career Interests: {interests}
     Emotional State: {', '.join(emotions)}
@@ -60,10 +45,10 @@ def build_emotion_aware_prompt():
 
     Please analyze the emotional patterns and generate:
     1. Emotional diagnosis and coaching tone
-    2. Categorize problem (e.g., lack of clarity, burnout, fear of failure)
+    2. Categorize the problem (e.g., lack of clarity, burnout, fear of failure)
     3. Short/Mid/Long-term career roadmap with routines
     4. Suggest mood-based daily habit loops
-    5. If relevant, add mermaid chart or Gantt chart
+    5. Present structured plans using markdown or tables (no code or mermaid)
     """
 
 # --- Trigger Roadmap Generation ---
@@ -73,10 +58,11 @@ if st.sidebar.button("🔄 Start My Journey"):
     else:
         with st.spinner("🧠 Interpreting your emotional and career context..."):
             prompt = build_emotion_aware_prompt()
-            st.session_state.messages.append({"role": "user", "content": prompt})
+            # Don't show prompt in chat; just use it for one-time generation
+            temp_messages = st.session_state.messages + [{"role": "user", "content": prompt}]
             response = client.chat.completions.create(
                 model="gpt-4-turbo",
-                messages=st.session_state.messages,
+                messages=temp_messages,
                 temperature=0.8
             )
             reply = response.choices[0].message.content
@@ -99,10 +85,10 @@ if user_query:
 # --- Display Chat ---
 for msg in st.session_state.messages[1:]:
     with st.chat_message(msg["role"]):
-        if "```mermaid" in msg["content"]:
-            parts = msg["content"].split("```mermaid")
-            st.markdown(parts[0])
-            mermaid_code = parts[1].strip().strip("`")
-            render_mermaid_chart(mermaid_code)
-        else:
-            st.markdown(msg["content"])
+        st.markdown(msg["content"])
+
+# --- Optional Future Integration: Gantt chart using Plotly ---
+# from plotly.figure_factory import create_gantt
+# def render_gantt(tasks):
+#     fig = create_gantt(tasks, index_col='Resource', show_colorbar=True, group_tasks=True)
+#     st.plotly_chart(fig)
