@@ -1,11 +1,11 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import os
 from datetime import datetime
 from typing import List
 
-# Set your OpenAI API key
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# Initialize OpenAI client
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.set_page_config(page_title="Pathly - AI Career Coach", layout="wide")
 st.title("🤖 Pathly - Your AI Career Coach")
@@ -95,7 +95,7 @@ if st.sidebar.button("Generate Personalized Career Advice"):
             for agent_prompt in agents:
                 messages.append(agent_prompt)
 
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-4-turbo",
                 messages=messages,
                 temperature=0.75
