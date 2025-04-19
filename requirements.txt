@@ -3,6 +3,7 @@ Crawl4AI
 unstructured
 Markdown
 duckduckgo_search
-chromadb
+pip uninstall -y chromadb hnswlib duckdb duckdb-engine chromadb-hnswlib chromadb-client
+pip install --force-reinstall --no-cache-dir chromadb
 langchain-community
 ollama
