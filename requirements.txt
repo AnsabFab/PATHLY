@@ -1,2 +1,8 @@
 streamlit
-openai
+Crawl4AI
+unstructured
+Markdown
+duckduckgo_search
+chromadb
+langchain-community
+ollama
