@@ -1,9 +1,4 @@
 streamlit
-faiss-cpu
-numpy
-pandas
-requests
-ollama
-duckduckgo-search
-crawl4ai
-playwright
+google-generativeai
+python-dotenv
+pytz
