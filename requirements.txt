@@ -1,10 +1,9 @@
 streamlit
+faiss-cpu
+numpy
 pandas
+requests
 ollama
 duckduckgo-search
-lancedb
-pyarrow
-numpy
-requests
-crawl4ai[playwright]
-playwright install --with-deps
+crawl4ai
+playwright install
