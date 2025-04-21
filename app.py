@@ -48,7 +48,7 @@ except Exception as e:
 # --- LLM Prompts (Revised for Aishura Spec) ---
 
 EMOTION_PROMPT = """SYSTEM: You are Aishura, an empathetic AI career assistant. Analyze the user's entry for their primary career-related emotion, intensity (1-10), potential triggers, and growth opportunities. Respond ONLY with a valid JSON object. No explanations.
-USER: Analyze this entry: {journal_entry_text}
+USER: "Analyze this: {journal_entry_text}"
 JSON Structure: {"primary_emotion": "string", "intensity": integer, "triggers": ["string"], "growth_opportunities": ["string"]}
 """
 
