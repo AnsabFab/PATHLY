@@ -20,7 +20,7 @@ if not GEMINI_API_KEY:
 try:
     genai.configure(api_key=GEMINI_API_KEY)
     # Note: Using gemini-1.5-flash-latest as the current high-speed model.
-    MODEL_NAME = "gemini-1.5-flash-latest"
+    MODEL_NAME = "gemini-2.0-flash"
     # Safety settings can be adjusted if needed
     SAFETY_SETTINGS = [
         {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
