@@ -6,4 +6,4 @@ requests
 ollama
 duckduckgo-search
 crawl4ai
-playwright install
+playwright
