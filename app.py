@@ -47,10 +47,25 @@ except Exception as e:
 
 # --- LLM Prompts (Revised for Aishura Spec) ---
 
-EMOTION_PROMPT = """SYSTEM: You are Aishura, an empathetic AI career assistant. Analyze the user's entry for their primary career-related emotion, intensity (1-10), potential triggers, and growth opportunities. Respond ONLY with a valid JSON object. No explanations.
-USER: "Analyze this: {journal_entry_text}"
-JSON Structure: {"primary_emotion": "string", "intensity": integer, "triggers": ["string"], "growth_opportunities": ["string"]}
+def analyze_entry(journal_entry: str) -> Dict:
+    """Analyzes emotion in a journal entry using the LLM (using f-string)."""
+    # Define the prompt locally using an f-string
+    # Note: Ensure journal_entry is properly handled if it contains special chars,
+    # but for typical text input, this should be fine.
+    # Double {{ and }} are used to escape literal braces for the JSON example.
+    prompt = f"""SYSTEM: You are Aishura, an empathetic AI career assistant. Analyze the user's entry for their primary career-related emotion, intensity (1-10), potential triggers, and growth opportunities. Respond ONLY with a valid JSON object. No explanations.
+USER: Analyze this entry: {journal_entry}
+JSON Structure: {{"primary_emotion": "string", "intensity": integer, "triggers": ["string"], "growth_opportunities": ["string"]}}
 """
+    # Add a debug print to see the final prompt
+    # print("DEBUG: analyze_entry prompt:\n", prompt)
+
+    try:
+        return call_gemini_llm(prompt)
+    except Exception as e:
+         # Catch potential errors during the call itself
+         st.error(f"Error calling LLM in analyze_entry: {e}")
+         return {"error": f"LLM call failed: {e}", "raw_response": None}
 
 GROWTH_PLAN_PROMPT = """SYSTEM: You are Aishura, an AI career coach. Create a concise, actionable growth plan based on the user's career concern analysis. Respond ONLY with a valid JSON object. No explanations.
 USER: Create a plan based on this analysis: {analysis_and_goals_json}
