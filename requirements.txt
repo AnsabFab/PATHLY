@@ -1,4 +1,11 @@
 streamlit
-google-generativeai
 python-dotenv
+pillow
+google-generativeai
 pytz
+pandas
+matplotlib
+seaborn
+plotly
+numpy
+requests
